@@ -31,7 +31,7 @@ const products = [
         category: pizzasCategoryId,
         name: "Pizza Calabresa",
         description:
-            "Pizza com molho de tomate, queijo muçarela, calabresa fatiada e cebola.",
+            "Pizza com molho de tomate, queijo mussarela, calabresa fatiada e cebola.",
         price: 49.9,
     },
     {
@@ -39,7 +39,7 @@ const products = [
         category: pizzasCategoryId,
         name: "Pizza Frango com Catupiry",
         description:
-            "Pizza com molho de tomate, queijo muçarela, frango desfiado e Catupiry.",
+            "Pizza com molho de tomate, queijo mussarela, frango desfiado e Catupiry.",
         price: 54.9,
     },
     {
