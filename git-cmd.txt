@@ -1,4 +1,6 @@
-# Colinha Git: Nova Branch + Commit + Push
+# Colinha Git:
+
+Nova Branch + Commit + Push
 
 1. Criar e mudar para a nova branch:
    git checkout -b "nome-da-branch"
@@ -16,4 +18,28 @@
 Comandos de checagem:
 - Ver branch atual: git branch
 - Ver alterações pendentes: git status
+
+Renomear uma branch
+COMO RENOMEAR UMA BRANCH NO GIT APÓS FAZER GIT PUSH
+
+
+Passo 1: Renomear a branch localmente
+
+Se você já estiver na branch que deseja renomear, execute:
+
+    git branch -m novo-nome-da-branch
+
+(Se estiver em outra branch, execute: git branch -m nome-antigo novo-nome)
+
+
+Passo 2: Deletar a branch com o nome antigo no remoto
+Remova a branch com o nome antigo do GitHub/GitLab:
+
+    git push origin --delete nome-antigo-da-branch
+
+
+Passo 3: Enviar a nova branch para o remoto e redefinir o rastreamento
+Suba a nova branch e defina o upstream (rastreamento):
+
+    git push origin -u novo-nome-da-branch
 
