@@ -1,6 +1,6 @@
 import express from "express";
 import { randomUUID } from "node:crypto";
-//import supabase from "./config/supabase.js"; - DESCOMENTAR O IMPORT NA AULA DE SEXTA
+import supabase from "./config/supabase.js"; 
 
 const app = express();
 
@@ -29,7 +29,7 @@ const categories = [
 const products = [
     {
         id: randomUUID(),
-        category: pizzasCategoryId,
+        categoryId: pizzasCategoryId,
         name: "Pizza Calabresa",
         description:
             "Pizza com molho de tomate, queijo mussarela, calabresa fatiada e cebola.",
@@ -37,7 +37,7 @@ const products = [
     },
     {
         id: randomUUID(),
-        category: pizzasCategoryId,
+        categoryId: pizzasCategoryId,
         name: "Pizza Frango com Catupiry",
         description:
             "Pizza com molho de tomate, queijo mussarela, frango desfiado e Catupiry.",
@@ -45,7 +45,7 @@ const products = [
     },
     {
         id: randomUUID(),
-        category: drinksCategoryId,
+        categoryId: drinksCategoryId,
         name: "Refrigerante Coca-Cola 2L",
         description:
             "Refrigerante Coca-Cola de 2 litros, ideal para acompanhar sua pizza.",
@@ -53,7 +53,7 @@ const products = [
     },
     {
         id: randomUUID(), //Alterado com comparção do GitHub
-        category: pizzasCategoryId,
+        categoryId: pizzasCategoryId,
         name: "Pizza de Chocolate",
         description: "Pizza doce com chocolate cremoso e cobertura de chocolate.",
         price: 39.9,
@@ -186,7 +186,7 @@ app.put("/products/:id", (req, res) => {
 
     if(!product){
         return res.status(404).json({ // 404 = error
-            message: "Produto não encontrada"
+            message: "Product não encontrada"
         });
     }
 
@@ -221,25 +221,25 @@ app.delete("/products/:id", (req, res) => {
 
 // supabase
 
-app.get("/test-supabase", async(req, res) => {
+app.get("/test-supabase", async(req, res) => { // Cria uma rota GET
     const { data, error } = await supabase
-    .from("categorias")
-    .select("*");
+    .from("categories") // Acessa a tabela categories
+    .select("*"); //Esse comando é o mesmo que select * from table no SQL
 
-    if(error){
+    if(error){ // Verifica se deu algum problema
         console.log("Erro ao consultar Supabase", error);
 
-        return res.status(500).json({
+        return res.status(500).json({ // Informa que ocorreu um erro
             success: false,
             message: "erro ao consultar o banco de dados",
             error: error.message,
         });
     }
 
-    res.status(200).json({
+    res.status(200).json({ // Informa que deu tudo certo
         success: true,
         message: "Conexão com supabase realizada com sucesso",
-        data,
+        data, // Contém os dados que vieram do banco
     });
 });
 
