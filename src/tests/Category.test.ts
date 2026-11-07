@@ -3,7 +3,7 @@ import { Category } from "../models/Category.js";
 
 describe("Category - Testes Unitários", () => {
 
-    it("não deve  permitir criar umma categoria com nome vazio", () => {
+    it("não deve  permitir criar uma categoria com nome vazio", () => {
         const name = "Pizzas";
         const display_order = 1;
         const description = "Categoria de Pizzas";
