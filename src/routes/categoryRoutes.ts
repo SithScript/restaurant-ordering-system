@@ -7,7 +7,7 @@ router.get("/", CategoryController.getAll);
 router.get("/search/:keyword", CategoryController.getByKeyword);
 router.get("/:id", CategoryController.getById);
 router.post("/", CategoryController.create);
-router.post("/:id", CategoryController.update);
+router.put("/:id", CategoryController.update);
 router.delete("/:id", CategoryController.remove);
 
 export default router;

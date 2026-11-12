@@ -22,19 +22,19 @@ async function getByKeyword(req: Request<{ keyword: string }>, res: Response) {
     const { keyword } = req.params;
 
     if (!keyword || typeof keyword != "string") {
-        res.status(400).json({
+        return res.status(400).json({
             message: "Palavra-chave não informada."
-        })
+        });
     }
 
     try {
         const categories = await CategoryRepository.searchByKeyword(keyword);
 
-        res.status(200).json(categories);
+        return res.status(200).json(categories);
     } catch (error) {
         console.error("Erro ao pesquisar por categoria: ", error);
 
-        res.status(500).json({
+        return res.status(500).json({
             message: "Erro ao pesquisar categoria.",
         });
     }
@@ -44,15 +44,15 @@ async function getById(req: Request<{ id: string }>, res: Response) {
     const { id } = req.params;
 
     if (!id) {
-        res.status(404).json({
+        return res.status(400).json({
             message: "ID da Categoria não informado."
-        })
+        });
     }
 
     try {
         const category = await CategoryRepository.findById(id);
 
-        res.status(200).json({
+        return res.status(200).json({
             id: category.getId(),
             name: category.getName(),
             description: category.getDescription(),
@@ -64,12 +64,12 @@ async function getById(req: Request<{ id: string }>, res: Response) {
         console.error("Erro ao buscar categoria: ", error);
 
         if (error instanceof NotFoundError) {
-            res.status(404).json({
+            return res.status(404).json({
                 message: error.message,
             });
         }
 
-        res.status(500).json({
+        return res.status(500).json({
             message: "Erro interno ao buscar categoria.",
         });
     }
@@ -82,7 +82,7 @@ async function create(req: Request, res: Response) {
         const category = new Category(name, display_order, description, icon);
         const createdCategory = await CategoryRepository.create(category);
 
-        res.status(200).json(createdCategory);
+        return res.status(201).json(createdCategory);
     } catch (error) {
         console.error("Erro ao criar categoria: ", error);
 
@@ -92,7 +92,7 @@ async function create(req: Request, res: Response) {
             });
         }
 
-        res.status(500).json({
+        return res.status(500).json({
             message: "Erro ao criar categoria.",
         });
     }
@@ -103,42 +103,42 @@ async function update(req: Request<{ id: string }>, res: Response) {
     const { name, display_order, description, icon, active } = req.body;
 
     if (!id) {
-        res.status(404).json({
+        return res.status(400).json({
             message: "ID da Categoria não informado."
-        })
+        });
     }
 
     try {
         const category = await CategoryRepository.findById(id);
 
         //Validações
-    if(name !== undefined) {
-        category.rename(name);
-    }
+        if(name !== undefined) {
+            category.rename(name);
+        }
 
-    if(description !== undefined) {
-        category.changeDescription(description);
-    }
+        if(description !== undefined) {
+            category.changeDescription(description);
+        }
 
-    if(icon !== undefined) {
-        category.changeIcon(icon);
-    }
+        if(icon !== undefined) {
+            category.changeIcon(icon);
+        }
 
-    if(display_order !== undefined) {
-        category.changeDiplayOrder(display_order);
-    }
+        if(display_order !== undefined) {
+            category.changeDiplayOrder(display_order);
+        }
 
-    if (active === true) {
-        category.activate;
-    }
+        if (active === true) {
+            category.activate();
+        }
 
-    if (active === false) {
-        category.deactivate;
-    }
+        if (active === false) {
+            category.deactivate();
+        }
 
         const updatedCategory = await CategoryRepository.update(category);
 
-        res.status(200).json(updatedCategory);
+        return res.status(200).json(updatedCategory);
     } catch (error) {
         console.error("Erro ao atualizar categoria: ", error);
 
@@ -149,17 +149,13 @@ async function update(req: Request<{ id: string }>, res: Response) {
         }
 
         if (error instanceof NotFoundError) {
-            res.status(404).json({
+            return res.status(404).json({
                 message: error.message,
             });
         }
 
-        res.status(404).json({
-            message: "Categoria não encontrada.",
-        });
-
-        res.status(500).json({
-            message: "Erro ao interno ao atualizar categoria.",
+        return res.status(500).json({
+            message: "Erro interno ao atualizar categoria.",
         });
     }
 }
@@ -168,27 +164,27 @@ async function remove(req: Request<{ id: string }>, res: Response) {
     const { id } = req.params;
 
     if (!id) {
-        res.status(404).json({
+        return res.status(400).json({
             message: "ID da Categoria não informado."
-        })
+        });
     }
 
     try {
         await CategoryRepository.remove(id);
 
-        res.status(200).json({
+        return res.status(200).json({
             message: "Categoria removida com sucesso.",
         });
     } catch (error) {
         console.error("Erro ao remover categoria: ", error);
 
         if (error instanceof NotFoundError) {
-            res.status(404).json({
+            return res.status(404).json({
                 message: error.message,
             });
         }
 
-        res.status(500).json({
+        return res.status(500).json({
             message: "Erro interno ao remover categoria.",
         });
     }

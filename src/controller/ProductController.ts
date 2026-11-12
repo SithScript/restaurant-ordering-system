@@ -55,8 +55,30 @@ async function getById(req: Request<{ id: string }>, res: Response) {
     }
 }
 
+async function getByCategory(req: Request<{ categoryId: string }>, res: Response) {
+    const { categoryId } = req.params;
+
+    if (!categoryId) {
+        return res.status(400).json({
+            message: "ID da categoria não informado.",
+        });
+    }
+
+    try {
+        const products = await ProductRepository.findByCategory(categoryId);
+
+        return res.status(200).json(products);
+    } catch (error) {
+        console.error("Erro ao buscar produtos da categoria:", error);
+
+        return res.status(500).json({
+            message: "Erro ao buscar produtos da categoria.",
+        });
+    }
+}
+
 async function search(req: Request, res: Response) {
-    const { keyword } = req.query;
+    const keyword = (req.params.keyword || req.query.keyword) as string;
 
     if (!keyword || typeof keyword !== "string") {
         return res.status(400).json({
@@ -208,6 +230,7 @@ async function remove(req: Request<{ id: string }>, res: Response) {
 export default {
     getAll,
     getById,
+    getByCategory,
     search,
     create,
     update,

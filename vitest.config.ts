@@ -1,7 +1,10 @@
 import { loadEnvFile } from "node:process";
 import { defineConfig } from "vitest/config";
+import fs from "node:fs";
 
-loadEnvFile(".env")
+if (fs.existsSync(".env")) {
+    loadEnvFile(".env");
+}
 
 export default defineConfig({
     test: {

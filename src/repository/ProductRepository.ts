@@ -40,6 +40,19 @@ async function findById(id: string): Promise<Product> {
     );
 }
 
+async function findByCategory(categoryId: string) {
+    const { data, error } = await supabase
+        .from("products")
+        .select("*")
+        .eq("category_id", categoryId);
+
+    if (error) {
+        throw error;
+    }
+
+    return data;
+}
+
 async function searchByKeyword(keyword: string) {
     const { data, error } = await supabase
         .from("products")
@@ -134,6 +147,7 @@ async function remove(id: string) {
 export default {
     findAll,
     findById,
+    findByCategory,
     searchByKeyword,
     create,
     update,
