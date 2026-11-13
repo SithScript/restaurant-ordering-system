@@ -125,7 +125,7 @@ async function update(req: Request<{ id: string }>, res: Response) {
         }
 
         if(display_order !== undefined) {
-            category.changeDiplayOrder(display_order);
+            category.changeDisplayOrder(display_order);
         }
 
         if (active === true) {
@@ -173,7 +173,7 @@ async function remove(req: Request<{ id: string }>, res: Response) {
         await CategoryRepository.remove(id);
 
         return res.status(200).json({
-            message: "Categoria removida com sucesso.",
+            message: "Categoria removida com sucesso!",
         });
     } catch (error) {
         console.error("Erro ao remover categoria: ", error);

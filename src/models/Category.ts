@@ -17,10 +17,10 @@ export class Category {
         this.active = true;
 
         this.rename(name);
-        this.changeDiplayOrder(display_order);
+        this.changeDisplayOrder(display_order);
     }
 
-    static restore(id: string, name: string, display_order: number, active: boolean, description: string, icon: string): Category {
+    static restore(id: string, name: string, display_order: number, active: boolean, description: string, icon?: string): Category {
         const category = new Category(name, display_order, description, icon);
 
         category.id = id;
@@ -45,7 +45,7 @@ export class Category {
     public getDisplayOrder(): number {
         return this.display_order;
     }
-    isActive(): boolean {
+    public isActive(): boolean {
         return this.active;
     }
 
@@ -65,11 +65,11 @@ export class Category {
         this.icon = icon;
     }
 
-    changeDiplayOrder(display_order: number): void {
+    changeDisplayOrder(display_order: number): void {
         
         if(!Number.isInteger(display_order) || display_order < 0) {
             throw new ValidationError(
-                "A ordem da exibição deve ser um número inteiro maior ou igual a zero."
+                "A ordem de exibição deve ser um número inteiro maior ou igual a zero."
             );
         }
 

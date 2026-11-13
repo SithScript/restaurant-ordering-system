@@ -61,6 +61,10 @@ async function create(category: Category) {
 
 async function update(category: Category) {
     const id = category.getId();
+
+    if (!id) {
+        throw new Error("Categoria sem ID não pode ser atualizada.");
+    }
     
     const { data, error } = await supabase
         .from("categories")

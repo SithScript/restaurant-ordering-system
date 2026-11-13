@@ -3,7 +3,7 @@ import { Category } from "../models/Category.js";
 
 describe("Category - Testes Unitários", () => {
 
-    it("não deve  permitir criar uma categoria com nome vazio", () => {
+    it("deve criar uma categoria válida", () => {
         const name = "Pizzas";
         const display_order = 1;
         const description = "Categoria de Pizzas";
@@ -43,7 +43,7 @@ describe("Category - Testes Unitários", () => {
         expect(() => {
             new Category(name, display_order);
         }).toThrow(
-            "A ordem da exibição deve ser um número inteiro maior ou igual a zero."
+            "A ordem de exibição deve ser um número inteiro maior ou igual a zero."
         );
     });
 
@@ -74,7 +74,7 @@ describe("Category - Testes Unitários", () => {
 
         expect(() => {
             new Category(name, display_order);
-        }).toThrow("A ordem da exibição deve ser um número inteiro maior ou igual a zero.");
+        }).toThrow("A ordem de exibição deve ser um número inteiro maior ou igual a zero.");
 
     });
 
@@ -182,13 +182,21 @@ describe("Category - Testes Unitários", () => {
 
         const category = new Category("Pizzas", 1);
 
-        category.changeDiplayOrder(14)
+        category.changeDisplayOrder(14);
 
         expect(category.getDisplayOrder()).toBe(14);
     });
 
+    it("deve preservar a ordem de exibição original após uma alteração inválida", () => {
+        const category = new Category("Pizzas", 1);
 
+        expect(() => {
+            category.changeDisplayOrder(-5);
+        }).toThrow(
+            "A ordem de exibição deve ser um número inteiro maior ou igual a zero."
+        );
 
-
+        expect(category.getDisplayOrder()).toBe(1);
+    });
 });
 

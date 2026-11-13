@@ -26,7 +26,7 @@ describe("Category - Teste de Integração", () => {
 
         const response = await request(app).post("/categories").send(data);
 
-        expect(response.status).toBe(200);
+        expect(response.status).toBe(201);
         expect(response.body.id).toEqual(expect.any(String));
 
         return {
@@ -36,7 +36,7 @@ describe("Category - Teste de Integração", () => {
     }
 
     afterEach(async () => {
-        const names = testNames.splice(0);
+        const names = testNames.slice(0);
         if (names.length === 0) {
             return;
         }
@@ -46,10 +46,9 @@ describe("Category - Teste de Integração", () => {
             .in("name", names);
 
         if (error) {
-            throw new Error('Falha ao limpar categorias do teste: ${error.message}');
+            throw new Error(`Falha ao limpar categorias do teste: ${error.message}`);
         }
-
-    }, 20_000);
+    });
 
     //POST
     it("deve criar uma categoria válida", async () => {
@@ -58,7 +57,7 @@ describe("Category - Teste de Integração", () => {
 
         const response = await request(app).post("/categories").send(data);
 
-        expect(response.status).toBe(200);
+        expect(response.status).toBe(201);
         expect(response.body.id).toEqual(expect.any(String));
         expect(response.body).toMatchObject({
             ...data,
@@ -104,9 +103,9 @@ describe("Category - Teste de Integração", () => {
     it("deve buscar uma categoria por palavra-chave", async () => {
         const { id, data } = await createCategory();
 
-        const response = await request(app)
-            .get(`/categories/search/${data.name}`)
-            .query({ keyword: data.name });
+        const response = await request(app).get(
+            `/categories/search/${encodeURIComponent(data.name)}`
+        );
 
         expect(response.status).toBe(200);
         expect(response.body).toEqual(
@@ -117,5 +116,40 @@ describe("Category - Teste de Integração", () => {
                 }),
             ]),
         );
+    }, 20_000);
+
+    //DELETE
+    it("deve remover uma categoria existente", async () => {
+        const { id } = await createCategory();
+
+        const response = await request(app).delete(`/categories/${id}`);
+
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual({
+            message: "Categoria removida com sucesso!",
+        });
+    }, 20_000);
+
+    //PUT
+    it("deve atualizar os dados de uma categoria existente", async () => {
+        const { id } = await createCategory();
+
+        const updateData = {
+            ...makeCategoryData(),
+            description: "Descrição atualizada pelo teste.",
+            icon: "🍰",
+            display_order: 5,
+            active: false,
+        };
+
+        const response = await request(app)
+            .put(`/categories/${id}`)
+            .send(updateData);
+
+        expect(response.status).toBe(200);
+        expect(response.body).toMatchObject({
+            id,
+            ...updateData,
+        });
     }, 20_000);
 });
