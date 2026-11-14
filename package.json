@@ -34,6 +34,8 @@
   "devDependencies": {
     "@types/express": "^5.0.6",
     "@types/node": "^26.2.0",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.8",
     "@vitest/coverage-v8": "^5.1.0",
     "@vitest/ui": "^5.1.0",
     "tsx": "^4.23.12",
@@ -44,6 +46,8 @@
     "@types/supertest": "^7.2.1",
     "express": "^5.2.1",
     "supertest": "^7.3.1",
+    "swagger-jsdoc": "^6.3.0",
+    "swagger-ui-express": "^5.0.1",
     "vitest": "^5.0.5"
   }
 }
